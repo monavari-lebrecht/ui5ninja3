@@ -17,6 +17,10 @@
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/node": "^18.11.12",
+    "@ui5/webcomponents": "*",
+    "@ui5/webcomponents-fiori": "*",
+    "@webcomponents/custom-elements": "*",
+    "@webcomponents/shadydom": "*",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
