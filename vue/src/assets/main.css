@@ -1,35 +1,29 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+html,body,#fcl {
+  height: 100%;
+  margin: 0;
+  color: var(--sapContent_LabelColor);
+  font-family: "72override",var(--sapFontFamily);
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+#app, #app ui5-flexible-column-layout {
+  height: 100vh;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+ui5-li-groupheader {
+  height: 1.6rem;
+  color: var(--sapContent_LabelColor);
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+ui5-li-groupheader::part(native-li) {
+  padding-top: 0;
 }
+
+ui5-li::part(native-li) {
+  padding-left: 2rem;
+}
+
+p {
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+

@@ -1,0 +1,61 @@
+{
+  "name": "ui5ninja",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "express": "^4"
+  },
+  "devDependencies": {
+    "@sap/cds": "^5.9.2",
+    "axios": "^0.27.1",
+    "cds2types": "^2.7.2",
+    "fs-extra": "^10.0.1",
+    "https": "^1.0.0",
+    "npm-run-all": "^4.1.5",
+    "request": "^2.88.2",
+    "sqlite3": "^5.0.2"
+  },
+  "scripts": {
+    "start:localdev": "npm-run-all --parallel localdev:cds localdev:vue",
+    "localdev:cds": "cds watch --with-mocks --in-memory",
+    "localdev:vue": "cd vue && npm run dev"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "es2020": true,
+      "node": true,
+      "jest": true,
+      "mocha": true
+    },
+    "globals": {
+      "SELECT": true,
+      "INSERT": true,
+      "UPDATE": true,
+      "DELETE": true,
+      "CREATE": true,
+      "DROP": true,
+      "CDL": true,
+      "CQL": true,
+      "CXL": true,
+      "cds": true
+    },
+    "rules": {
+      "no-console": "off",
+      "require-atomic-updates": "off"
+    }
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": "db/ui5ninja.db"
+        }
+      }
+    }
+  }
+}
