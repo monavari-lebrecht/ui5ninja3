@@ -1,11 +1,14 @@
-html,body,#fcl {
+html,
+body,
+#fcl {
   height: 100%;
   margin: 0;
   color: var(--sapContent_LabelColor);
-  font-family: "72override",var(--sapFontFamily);
+  font-family: "72override", var(--sapFontFamily);
 }
 
-#app, #app ui5-flexible-column-layout {
+#app,
+#app ui5-flexible-column-layout {
   height: 100vh;
 }
 
@@ -27,3 +30,16 @@ p {
   font-size: 0.9rem;
 }
 
+ui5-page::part(content) {
+  padding: 0px;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+}
+
+.headerContent img {
+  width: 2rem;
+  padding-right: 0.5rem;
+}

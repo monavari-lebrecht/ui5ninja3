@@ -1,45 +1,21 @@
 <!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
-  <ui5-page id="controlsPage" slot="startColumn">
+  <!-- middle column -->
+  <ui5-page slot="midColumn">
     <ui5-bar design="Header" slot="header">
-      <div class="headerContent">
-        <img
-          src="/src/assets/logo.svg"
-          alt="logo"
-          slot="startContent"
-          id="headerLogo"
-        />
-        UI5.ninja
-      </div>
-      <ui5-input
-        slot="endContent"
-        background-design="List"
-        id="searchInput"
-        @change="filterControls"
-        :value="searchQuery"
-        placeholder="Control ..."
-        style="width: 100%"
-      >
-        <ui5-icon id="searchIcon" slot="icon" name="search"></ui5-icon>
-      </ui5-input>
+      <h2>{{ Sample.title }}</h2>
     </ui5-bar>
-
-    <ui5-list
-      mode="SingleSelect"
-      growing="Scroll"
-      v-on:load-more="loadMoreControls"
-    >
-      <template v-for="control in controls" :key="control.ID">
-        <ui5-li-groupheader>{{ control.title }}</ui5-li-groupheader>
-        <ui5-li
-          v-for="sample in control.samples"
-          :key="sample.ID"
-          @click="clickSample(sample.ID)"
-        >
-          {{ sample.title }}</ui5-li
-        >
-      </template>
-    </ui5-list>
+    <div>
+      <p>{{ Sample.description }}</p>
+      <ui5-list id="col2list">
+        <ui5-tabcontainer class="full-width" fixed>
+          <template v-for="file in Sample.files" v-bind:key="file.title">
+            <ui5-tab :text="file.title">
+              <div ref="editor-{{file.title}}" style="height: 1000px"></div>
+            </ui5-tab>
+          </template> </ui5-tabcontainer
+      ></ui5-list>
+    </div>
   </ui5-page>
 </template>
 
@@ -52,14 +28,14 @@ import "@ui5/webcomponents/dist/GroupHeaderListItem";
 import { o } from "odata";
 import { defineComponent } from "vue";
 const odata = o("/browses/");
-import type { Control } from "../model/OData";
+import type { Control, Sample } from "../model/OData";
 
 export default defineComponent({
   data() {
     return {
-      controls: [] as Control[],
-      controlsPage: 0,
-      searchQuery: "",
+      Sample: {
+        title: "test",
+      },
     };
   },
   emits: ["sampleSelected"],
