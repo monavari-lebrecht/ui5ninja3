@@ -17,13 +17,12 @@ File or Folder | Purpose
 - Install cap `npm i -g @sap/cds-dk`
 - Install Node (tested with v16.15.0)
 - Run `npm i` in project root
-- Run `npm i` in `app/ui5-webcomponents-vue-main`
+- Run `npm i` in `vue`
 
 ## Next Steps
 
-- Open a new terminal and run `cds watch --with-mocks --in-memory`
-- Start Vue Service by switch to directory `app/ui5-webcomponents-vue-main` and running `npm run serve` in second terminal session
-
+- run `npm run start:localdev`
+- open `http://127.0.0.1:5173/` in browser
 
 ## Learn More
 
