@@ -38,3 +38,8 @@ ui5-page::part(content) {
   width: 2rem;
   padding-right: 0.5rem;
 }
+
+#contentLogo {
+  position: relative;
+  top: 50%;
+}

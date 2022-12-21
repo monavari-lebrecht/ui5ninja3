@@ -2,9 +2,12 @@
 <template>
   <!-- middle column -->
   <ui5-page slot="midColumn">
-    <ui5-bar>
+    <ui5-bar design="Header" slot="header">
       <ui5-label>{{ sample.title }}</ui5-label>
     </ui5-bar>
+    <p>
+      {{ sample.description }}
+    </p>
   </ui5-page>
 </template>
 

@@ -7,6 +7,7 @@ export interface Sample {
   ID: string;
   title: string;
   files: File[];
+  description: string;
 }
 
 export interface Control {

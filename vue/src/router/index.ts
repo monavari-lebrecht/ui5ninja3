@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import HomeSection from "../components/HomeSection.vue";
 import SampleSection from "../components/SampleSection.vue";
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes: [
     {
       path: "/",
@@ -11,7 +11,7 @@ const router = createRouter({
       component: HomeSection,
     },
     {
-      path: "/sample",
+      path: "/sample/:id",
       name: "Sample",
       component: SampleSection,
     },
