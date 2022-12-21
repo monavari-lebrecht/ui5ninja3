@@ -12,11 +12,6 @@ body,
   height: 100vh;
 }
 
-ui5-li-groupheader {
-  height: 1.6rem;
-  color: var(--sapContent_LabelColor);
-}
-
 ui5-li-groupheader::part(native-li) {
   padding-top: 0;
 }

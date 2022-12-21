@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
-  <ui5-page id="controlsPage" slot="startColumn">
+  <ui5-page id="controlsPage" background-design="List">
     <ui5-bar design="Header" slot="header">
-      <div class="headerContent">
+      <div class="headerContent" slot="startContent">
         <img
           src="/src/assets/logo.svg"
           alt="logo"
@@ -44,6 +44,8 @@
 </template>
 
 <script lang="ts">
+import "@ui5/webcomponents-fiori/dist/Bar.js";
+import "@ui5/webcomponents-fiori/dist/Page.js";
 import "@ui5/webcomponents/dist/Input";
 import "@ui5/webcomponents/dist/List";
 import "@ui5/webcomponents/dist/StandardListItem";
@@ -53,6 +55,7 @@ import { o } from "odata";
 import { defineComponent } from "vue";
 const odata = o("/browses/");
 import type { Control } from "../model/OData";
+import router from "./../router/index";
 
 export default defineComponent({
   data() {
@@ -88,7 +91,7 @@ export default defineComponent({
      * @param sampleId id of sample in odata
      */
     clickSample(sampleId: string) {
-      this.$emit("sampleSelected", sampleId);
+      router.push({ name: "Sample", params: { id: sampleId } });
     },
 
     /**
