@@ -1,8 +1,7 @@
 <!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
   <ui5-page id="controlsPage" background-design="List">
-    <ui5-illustrated-message name="BeforeSearch">
-    </ui5-illustrated-message>
+    <ui5-illustrated-message name="BeforeSearch"> </ui5-illustrated-message>
   </ui5-page>
 </template>
 
