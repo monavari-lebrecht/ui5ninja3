@@ -43,3 +43,8 @@ ui5-page::part(content) {
   position: relative;
   top: 50%;
 }
+
+/* FIXME: calculate height correctly */
+.codeContent {
+  height: 99vh;
+}

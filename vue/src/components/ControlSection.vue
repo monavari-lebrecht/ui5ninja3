@@ -4,7 +4,7 @@
     <ui5-bar design="Header" slot="header">
       <div class="headerContent" slot="startContent">
         <img
-          src="/src/assets/logo.svg"
+          src="/src/assets/images/logo.svg"
           alt="logo"
           slot="startContent"
           id="headerLogo"

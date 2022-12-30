@@ -1,18 +1,23 @@
 <!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
   <!-- middle column -->
-  <ui5-page slot="midColumn">
+  <ui5-page disable-scrolling>
     <ui5-bar design="Header" slot="header">
       <ui5-label>{{ sample.title }}</ui5-label>
     </ui5-bar>
     <p>
       {{ sample.description }}
     </p>
+    <ui5-bar>
+      <ui5-button
+        design="Positive"
+        icon="sap-icon://media-play"
+        slot="startContent"
+      ></ui5-button>
+    </ui5-bar>
     <ui5-tabcontainer class="full-width">
       <ui5-tab v-bind:text="file.title" v-for="file in files" :key="file.title">
-        <ui5-label>
-          {{ file.contents }}
-        </ui5-label>
+        <div class="codeContent">{{ file.content }}</div>
       </ui5-tab>
     </ui5-tabcontainer>
   </ui5-page>
@@ -23,6 +28,7 @@ import "@ui5/webcomponents/dist/Label";
 import "@ui5/webcomponents/dist/TabContainer";
 import "@ui5/webcomponents/dist/Tab";
 import "@ui5/webcomponents/dist/TabSeparator";
+import * as monaco from "monaco-editor";
 
 import { o } from "odata";
 const odata = o("/browses/");
@@ -35,7 +41,7 @@ import axios from "axios";
 
 interface File {
   title: string;
-  contents: string;
+  content: string;
 }
 
 interface Manifest {
@@ -72,10 +78,21 @@ export default defineComponent({
         this.files = [];
         // iterate over files in manifest and assign to view
         for (let filename of this.manifest["sap.ui5"].config.sample.files) {
-          const contents = (await axios.get(this.getUrl(filename))).data;
+          const content = (await axios.get(this.getUrl(filename))).data;
           this.files.push({
             title: filename,
-            contents,
+            content,
+          });
+        }
+        for (let element of document.getElementsByClassName("codeContent")) {
+          const code = element.innerHTML;
+          element.innerHTML = "";
+          monaco.editor.create(element, {
+            language: "json",
+            minimap: {
+              enabled: false,
+            },
+            value: code,
           });
         }
       },
