@@ -8,18 +8,21 @@
     <p>
       {{ sample.description }}
     </p>
-    <ui5-bar>
-      <ui5-button
-        design="Positive"
-        icon="sap-icon://media-play"
-        slot="startContent"
-      ></ui5-button>
-    </ui5-bar>
-    <ui5-tabcontainer class="full-width">
+    <ui5-tabcontainer
+      class="full-width"
+      collapsed
+      fixed
+      v-on:tab-select="selectFile"
+    >
+      <ui5-tab icon="media-play" design="Positive"></ui5-tab>
+      <ui5-tab-separator />
       <ui5-tab v-bind:text="file.title" v-for="file in files" :key="file.title">
-        <div class="codeContent">{{ file.content }}</div>
       </ui5-tab>
     </ui5-tabcontainer>
+    <wc-monaco-editor
+      language="javascript"
+      v-bind:value="code"
+    ></wc-monaco-editor>
   </ui5-page>
 </template>
 
@@ -28,7 +31,7 @@ import "@ui5/webcomponents/dist/Label";
 import "@ui5/webcomponents/dist/TabContainer";
 import "@ui5/webcomponents/dist/Tab";
 import "@ui5/webcomponents/dist/TabSeparator";
-import * as monaco from "monaco-editor";
+import "@vanillawc/wc-monaco-editor";
 
 import { o } from "odata";
 const odata = o("/browses/");
@@ -57,8 +60,15 @@ interface Manifest {
 export default defineComponent({
   emits: ["sampleSelected"],
   data() {
-    return { sample: {} as Sample, manifest: {}, files: [] as File[], id: "" };
+    return {
+      sample: {} as Sample,
+      manifest: {},
+      files: [] as File[],
+      id: "",
+      code: " ",
+    };
   },
+  mounted: function () {},
   setup() {},
   async created() {
     // watch the params of the route to fetch the data again
@@ -84,17 +94,6 @@ export default defineComponent({
             content,
           });
         }
-        for (let element of document.getElementsByClassName("codeContent")) {
-          const code = element.innerHTML;
-          element.innerHTML = "";
-          monaco.editor.create(element, {
-            language: "json",
-            minimap: {
-              enabled: false,
-            },
-            value: code,
-          });
-        }
       },
       // fetch the data when the view is created and the data is
       // already being observed
@@ -102,6 +101,19 @@ export default defineComponent({
     );
   },
   methods: {
+    getFile: function (filename: string) {
+      return this.files.find((element: File) => element.title === filename);
+    },
+    execute: () => {},
+    selectFile: function (event: {
+      detail: { tab: { text: string }; tabIndex: number };
+    }) {
+      if (event.detail.tabIndex === 0) {
+        this.execute();
+      } else {
+        this.code = this.getFile(event.detail.tab.text)?.content || "";
+      }
+    },
     getUrl(filename: string): string {
       let [total, name, lib] = /.*\.([^.]*)-(.*)\.[^.]*$/m.exec(
         this.id as string
