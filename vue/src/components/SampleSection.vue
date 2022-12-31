@@ -20,7 +20,7 @@
       </ui5-tab>
     </ui5-tabcontainer>
     <wc-monaco-editor
-      language="javascript"
+      v-bind:language="language"
       v-bind:value="code"
     ></wc-monaco-editor>
   </ui5-page>
@@ -66,6 +66,7 @@ export default defineComponent({
       files: [] as File[],
       id: "",
       code: " ",
+      language: "javascript",
     };
   },
   mounted: function () {},
@@ -111,7 +112,21 @@ export default defineComponent({
       if (event.detail.tabIndex === 0) {
         this.execute();
       } else {
-        this.code = this.getFile(event.detail.tab.text)?.content || "";
+        const extension = event.detail.tab.text.split(".").pop();
+        switch (extension) {
+          case "json":
+            {
+              this.code = JSON.stringify(
+                this.getFile(event.detail.tab.text)?.content
+              );
+            }
+            break;
+          default:
+            {
+              this.code = this.getFile(event.detail.tab.text)?.content || "";
+            }
+            break;
+        }
       }
     },
     getUrl(filename: string): string {
