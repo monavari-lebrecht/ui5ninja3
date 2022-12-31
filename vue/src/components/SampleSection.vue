@@ -14,15 +14,29 @@
       fixed
       v-on:tab-select="selectFile"
     >
-      <ui5-tab icon="media-play" design="Positive"></ui5-tab>
+      <ui5-tab icon="media-play" design="Positive" selected="false"></ui5-tab>
       <ui5-tab-separator />
-      <ui5-tab v-bind:text="file.title" v-for="file in files" :key="file.title">
+      <ui5-tab
+        v-bind:text="file.title"
+        v-for="(file, index) in files"
+        :key="file.title"
+        v-bind:selected="index === 0"
+      >
       </ui5-tab>
     </ui5-tabcontainer>
     <wc-monaco-editor
+      id="editor"
       v-bind:language="language"
       v-bind:value="code"
     ></wc-monaco-editor>
+    <iframe
+      style="display: none"
+      src="/"
+      frameborder="0"
+      id="preview"
+      height="100%"
+      width="100%"
+    ></iframe>
   </ui5-page>
 </template>
 
@@ -110,8 +124,12 @@ export default defineComponent({
       detail: { tab: { text: string }; tabIndex: number };
     }) {
       if (event.detail.tabIndex === 0) {
+        document.getElementById("editor").style.display = "none";
+        document.getElementById("preview").style.display = "block";
         this.execute();
       } else {
+        document.getElementById("editor").style.display = "block";
+        document.getElementById("preview").style.display = "none";
         const extension = event.detail.tab.text.split(".").pop();
         switch (extension) {
           case "json":
@@ -119,6 +137,19 @@ export default defineComponent({
               this.code = JSON.stringify(
                 this.getFile(event.detail.tab.text)?.content
               );
+              this.language = "json";
+            }
+            break;
+          case "xml":
+            {
+              this.language = "xml";
+              this.code = this.getFile(event.detail.tab.text)?.content || "";
+            }
+            break;
+          case "javascript":
+            {
+              this.language = "javascript";
+              this.code = this.getFile(event.detail.tab.text)?.content || "";
             }
             break;
           default:
