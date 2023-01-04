@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <base href="http://127.0.0.1:8080/" />
+    <script>
+      window["sap-ui-config"] = { frameOptionsConfig: { blockEvents: false,
+      showBlockLayer: false, }, };
+    </script>
+    <script
+      id="sap-ui-bootstrap"
+      src="https://ui5.sap.com/1.96.8/resources/sap-ui-core.js"
+      data-sap-ui-resourceroots='{
+      "{{namespace}}": "./"
+    }'
+      data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+      data-sap-ui-compatVersion="edge"
+      data-sap-ui-async="true"
+      data-sap-ui-frameOptions="trusted"
+      data-sap-ui-theme="sap_fiori_3"
+      data-sap-ui-xx-supportedLanguages="en,de"
+    ></script>
+    <script>
+      {{#each files}}
+        sap.ui.require.preload({ "{{@root.namespacePath}}/{{title}}": '{{{content}}}'
+        });
+      {{/each}}
+    </script>
+  </head>
+
+  <body class="sapUiBody">
+    <div data-sap-ui-component data-name="{{namespace}}" id="content"></div>
+  </body>
+</html>

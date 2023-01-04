@@ -63,6 +63,7 @@ module.exports = (db) => {
                                     `${sampleId}-${entity.id}`,
                                     sample.name,
                                     sample.description,
+                                    sampleId,
                                     entity.id
                                 ]);
                             }
@@ -83,6 +84,7 @@ module.exports = (db) => {
                         'ID',
                         'title',
                         'description',
+                        'namespace',
                         'control_ID'
                     ).rows(
                         samples

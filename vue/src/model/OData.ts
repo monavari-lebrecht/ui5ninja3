@@ -8,6 +8,8 @@ export interface Sample {
   title: string;
   files: File[];
   description: string;
+  namespace: string;
+  control_ID: string;
 }
 
 export interface Control {

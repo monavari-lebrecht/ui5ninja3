@@ -12,5 +12,6 @@ entity Samples {
   key ID          : String(128);
       title       : String(128);
       description : String(256);
+      namespace   : String(256);
       control     : Association to Controls;
 }
