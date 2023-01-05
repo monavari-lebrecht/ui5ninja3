@@ -16,8 +16,9 @@
     >
       <ui5-tab icon="media-play" design="Positive" selected="false"></ui5-tab>
       <ui5-tab-separator />
-      <ui5-tab v-bind:text="file.title" v-for="file in files" :key="file.title">
-      </ui5-tab>
+      <template v-for="file in files" :key="file.title">
+        <ui5-tab v-bind:text="file.title" v-if="file.visible" />
+      </template>
     </ui5-tabcontainer>
     <wc-monaco-editor
       id="editor"
@@ -30,9 +31,12 @@
       src="/"
       frameborder="0"
       id="preview"
-      height="80%"
+      height="75%"
       width="100%"
     ></iframe>
+    <ui5-bar design="Footer" slot="footer">
+      <ui5-button slot="endContent" icon="download" @click="download" />
+    </ui5-bar>
   </ui5-page>
 </template>
 
@@ -56,6 +60,7 @@ import axios from "axios";
 export interface File {
   title: string;
   content: string;
+  visible: boolean;
 }
 
 interface Manifest {
@@ -101,9 +106,8 @@ export default defineComponent({
           .data as Manifest;
 
         // iterate over files in manifest and assign to view
-        for (let filename of [
-          ...this.manifest["sap.ui5"].config.sample.files,
-        ]) {
+        for (let filename of this.manifest["sap.ui5"].config.sample.files) {
+          const visible = filename === "manifest.json" ? false : true;
           const content = (
             await axios.get(this.getUrl(filename), {
               responseType: "text",
@@ -112,6 +116,7 @@ export default defineComponent({
           this.files.push({
             title: filename,
             content,
+            visible,
           });
           this.execute();
         }
@@ -122,6 +127,14 @@ export default defineComponent({
     );
   },
   methods: {
+    download: async function () {
+      const content = await ComponentGenerator.generate(
+        this.files as File[],
+        this.sample.namespace,
+        this.sample.namespace.replace(/\./g, "/")
+      );
+      download(content, this.sample.namespace + ".html", "text/html");
+    },
     changeEditor: function (event) {
       this.currentFile.content = event.currentTarget.value;
     },
@@ -132,16 +145,11 @@ export default defineComponent({
       document.getElementById("editor").style.display = "none";
       document.getElementById("preview").style.display = "block";
       const iframe = document.getElementById("preview");
-      const content = (
-        await ComponentGenerator.generate(
-          this.files as File[],
-          this.sample.namespace,
-          this.sample.namespace.replace(/\./g, "/")
-        )
-      )
-        .replace(/\n/g, "")
-        .replace(/\t/g, "");
-      // download(content, `${this.sample.namespace}.html`, "text/html")
+      const content = await ComponentGenerator.generate(
+        this.files as File[],
+        this.sample.namespace,
+        this.sample.namespace.replace(/\./g, "/")
+      );
       iframe.src = `data:text/html;charset=utf-8,${content}`;
     },
     selectFile: function (event: {
