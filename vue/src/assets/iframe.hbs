@@ -1,6 +1,6 @@
 <html>
   <head>
-    <base href="http://127.0.0.1:8080/" />
+    <base href="http://localhost:5173/" />
     <script>
       window["sap-ui-config"] = { frameOptionsConfig: { blockEvents: false,
       showBlockLayer: false, }, };
@@ -14,15 +14,18 @@
       data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
       data-sap-ui-compatVersion="edge"
       data-sap-ui-async="true"
-      data-sap-ui-frameOptions="trusted"
       data-sap-ui-theme="sap_fiori_3"
       data-sap-ui-xx-supportedLanguages="en,de"
     ></script>
     <script>
+      sap.ui.require.preload({
+        "{{@root.namespacePath}}/Component.js": 'sap.ui.define([\'sap/ui/core/UIComponent\'],\n	function(UIComponent) {\n	"use strict";\n\n	var Component = UIComponent.extend("{{namespace}}.Component", {\n\n		metadata : {\n			manifest: "json"\n		}\n	});\n\n	return Component;\n\n});'
+      });
+      sap.ui.require.preload({
       {{#each files}}
-        sap.ui.require.preload({ "{{@root.namespacePath}}/{{title}}": '{{{content}}}'
-        });
+        "{{@root.namespacePath}}/{{title}}": '{{{content}}}',
       {{/each}}
+      });
     </script>
   </head>
 
