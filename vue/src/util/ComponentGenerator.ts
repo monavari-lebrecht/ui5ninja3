@@ -13,10 +13,7 @@ const ComponentGenerator = {
     const file = await axios.get("/src/assets/iframe.hbs");
     const template = Handlebars.compile(file.data);
     const filesForTemplate = files.map((file) => {
-      const content = file.content
-        .replace(/\n/gm, " ")
-        .replace(/\t/gm, " ")
-        .replace(/'/gm, '"');
+      const content = file.content.replace(/\n/gm, "\\n").replace(/'/gm, "\\'");
       return {
         title: file.title,
         content,
