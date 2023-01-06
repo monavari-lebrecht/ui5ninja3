@@ -4,9 +4,16 @@
     <ControlsVue slot="startColumn" />
     <RouterView slot="midColumn" />
   </ui5-flexible-column-layout>
+  <ui5-dialog id="error-sampleloading-dialog" header-text="Error" state="Error">
+    <p>
+      Sample konnte nicht geladen werden! Wählen Sie bitte ein anderes
+      Sample.<br />"Esc" zum fortfahren drücken
+    </p>
+  </ui5-dialog>
 </template>
 
 <script setup lang="ts">
+import "@ui5/webcomponents/dist/Dialog";
 import editorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import jsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
 import cssWorker from "monaco-editor/esm/vs/language/css/css.worker?worker";

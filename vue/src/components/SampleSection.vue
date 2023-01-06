@@ -102,23 +102,27 @@ export default defineComponent({
         this.sample = data;
 
         // load manifest of sample files
-        this.manifest = (await axios.get(this.getUrl("manifest.json")))
-          .data as Manifest;
+        try {
+          this.manifest = (await axios.get(this.getUrl("manifest.json")))
+            .data as Manifest;
 
-        // iterate over files in manifest and assign to view
-        for (let filename of this.manifest["sap.ui5"].config.sample.files) {
-          const visible = filename === "manifest.json" ? false : true;
-          const content = (
-            await axios.get(this.getUrl(filename), {
-              responseType: "text",
-            })
-          ).data;
-          this.files.push({
-            title: filename,
-            content,
-            visible,
-          });
-          this.execute();
+          // iterate over files in manifest and assign to view
+          for (let filename of this.manifest["sap.ui5"].config.sample.files) {
+            const visible = filename === "manifest.json" ? false : true;
+            const content = (
+              await axios.get(this.getUrl(filename), {
+                responseType: "text",
+              })
+            ).data;
+            this.files.push({
+              title: filename,
+              content,
+              visible,
+            });
+            this.execute();
+          }
+        } catch (error) {
+          document.getElementById("error-sampleloading-dialog").show();
         }
       },
       // fetch the data when the view is created and the data is
