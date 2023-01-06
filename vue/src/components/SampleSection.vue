@@ -199,7 +199,7 @@ export default defineComponent({
       let [total, name, lib] = /.*\.([^.]*)-(.*)\.[^.]*$/m.exec(
         this.id as string
       );
-      lib = lib.replace(".", "/");
+      lib = lib.replace(/\./g, "/");
       return `http://ui5.sap.com/1.96.7/test-resources/${lib}/demokit/sample/${name}/${filename}`;
     },
   },
