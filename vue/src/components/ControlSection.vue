@@ -53,24 +53,24 @@ import "@ui5/webcomponents/dist/CustomListItem";
 import "@ui5/webcomponents/dist/GroupHeaderListItem";
 import { o } from "odata";
 import { defineComponent } from "vue";
-const odata = o("/browses/");
 import type { Control } from "../model/OData";
 import router from "./../router/index";
+import DocuIndexGenerator from "@/util/DocuIndexGenerator";
 
 export default defineComponent({
   data() {
     return {
+      allControls: [] as Control[],
       controls: [] as Control[],
-      controlsPage: 0,
+      controlsPage: 1,
       searchQuery: "",
     };
   },
   emits: ["sampleSelected"],
   setup() {},
-  mounted() {
-    (async () => {
-      this.controls = await this.fetchControls();
-    })();
+  async mounted() {
+    this.allControls = await DocuIndexGenerator.generate("1.96.7");
+    this.controls = this.fetchControls();
   },
   methods: {
     /**
@@ -79,11 +79,8 @@ export default defineComponent({
      */
     filterControls(e: { target: { value: string } }) {
       this.searchQuery = e.target.value;
-      this.controls = [];
       this.controlsPage = 0;
-      (async () => {
-        this.controls = await this.fetchControls();
-      })();
+      this.controls = this.fetchControls();
     },
 
     /**
@@ -99,29 +96,17 @@ export default defineComponent({
      */
     loadMoreControls() {
       this.controlsPage++;
-      (async () => {
-        const moreControls = await this.fetchControls();
-        this.controls = [...this.controls, ...moreControls];
-      })();
+      this.controls = [...this.controls, ...this.fetchControls()];
     },
 
     /**
      * fetches controls/samples from odata context and returns them async
      */
-    async fetchControls(): Promise<Control[]> {
-      return new Promise((resolve) => {
-        odata
-          .get("Controls")
-          .query({
-            $search: encodeURIComponent(this.searchQuery),
-            $top: 30,
-            $skip: this.controlsPage * 30,
-            $expand: "samples",
-          })
-          .then((data) => {
-            resolve(data);
-          });
-      });
+    fetchControls(): Control[] {
+      return this.allControls.slice(
+        (this.controlsPage - 1) * 30,
+        this.controlsPage * 30
+      );
     },
   },
 });
