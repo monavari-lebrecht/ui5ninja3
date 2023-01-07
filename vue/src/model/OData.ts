@@ -6,7 +6,7 @@ export interface File {
 export interface Sample {
   ID: string;
   title: string;
-  files: File[];
+  files?: File[];
   description: string;
   namespace: string;
   control_ID: string;

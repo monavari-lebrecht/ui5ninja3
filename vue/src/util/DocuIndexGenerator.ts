@@ -1,5 +1,6 @@
 import axios from "axios";
 import { sortBy } from "lodash";
+import type { Sample } from "../model/OData";
 
 let libraries = [
   "sap/m",
@@ -35,7 +36,7 @@ export default {
             ID: entity.id,
             title: entity.name,
             since: entity.since,
-            samples: [],
+            samples: [] as Sample[],
           };
           for (const sampleId of entity.samples) {
             const sample = jsonResponse.explored.samples.find(

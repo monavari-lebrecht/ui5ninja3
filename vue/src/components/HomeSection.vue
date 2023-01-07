@@ -5,7 +5,7 @@
   </ui5-page>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import "@ui5/webcomponents/dist/Title.js";
 import "@ui5/webcomponents-fiori/dist/illustrations/BeforeSearch.js";
 import "@ui5/webcomponents-fiori/dist/IllustratedMessage.js";

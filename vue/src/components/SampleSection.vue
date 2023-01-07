@@ -41,12 +41,12 @@
 </template>
 
 <script lang="ts">
-import type Dialog from "@ui5/webcomponents/dist/Dialog";
 import "@ui5/webcomponents/dist/Label";
 import "@ui5/webcomponents/dist/TabContainer";
 import "@ui5/webcomponents/dist/Tab";
 import "@ui5/webcomponents/dist/TabSeparator";
 import "@vanillawc/wc-monaco-editor";
+import download from "in-browser-download";
 import ComponentGenerator from "./../util/ComponentGenerator";
 
 import { o } from "odata";
@@ -57,6 +57,7 @@ import { defineComponent } from "vue";
 import type { Sample } from "../model/OData";
 
 import axios from "axios";
+import type { Dialog } from "../ui5/Dialog";
 
 export interface File {
   title: string;
@@ -65,7 +66,7 @@ export interface File {
 }
 
 interface Manifest {
-  "sap.ui5": {
+  [index: string]: {
     config: {
       sample: {
         files: string[];
@@ -104,11 +105,12 @@ export default defineComponent({
 
         // load manifest of sample files
         try {
-          this.manifest = (await axios.get(this.getUrl("manifest.json")))
+          const manifest = (await axios.get(this.getUrl("manifest.json")))
             .data as Manifest;
 
           // iterate over files in manifest and assign to view
-          for (let filename of this.manifest["sap.ui5"].config.sample.files) {
+          const files = manifest["sap.ui5"].config.sample.files;
+          for (let filename of files) {
             const visible = filename === "manifest.json" ? false : true;
             const content = (
               await axios.get(this.getUrl(filename), {
@@ -125,7 +127,7 @@ export default defineComponent({
         } catch (error) {
           const dialog = document.getElementById(
             "error-sampleloading-dialog"
-          ) as Dialog;
+          )! as Dialog;
           dialog.show();
         }
       },
@@ -143,16 +145,16 @@ export default defineComponent({
       );
       download(content, this.sample.namespace + ".html", "text/html");
     },
-    changeEditor: function (event) {
+    changeEditor: function (event: { currentTarget: { value: string } }) {
       this.currentFile.content = event.currentTarget.value;
     },
     getFile: function (filename: string) {
       return this.files.find((element: File) => element.title === filename);
     },
     execute: async function () {
-      document.getElementById("editor").style.display = "none";
-      document.getElementById("preview").style.display = "block";
-      const iframe = document.getElementById("preview");
+      document.getElementById("editor")!.style.display = "none";
+      document.getElementById("preview")!.style.display = "block";
+      const iframe = document.getElementById("preview")! as HTMLIFrameElement;
       const content = await ComponentGenerator.generate(
         this.files as File[],
         this.sample.namespace,
@@ -166,10 +168,10 @@ export default defineComponent({
       if (event.detail.tabIndex === 0) {
         this.execute();
       } else {
-        document.getElementById("editor").style.display = "block";
-        document.getElementById("preview").style.display = "none";
+        document.getElementById("editor")!.style.display = "block";
+        document.getElementById("preview")!.style.display = "none";
         const extension = event.detail.tab.text.split(".").pop();
-        this.currentFile = this.getFile(event.detail.tab.text);
+        this.currentFile = this.getFile(event.detail.tab.text)!;
         switch (extension) {
           case "json":
             {
@@ -200,10 +202,10 @@ export default defineComponent({
       }
     },
     getUrl(filename: string): string {
-      let [total, name, lib] = /.*\.([^.]*)-(.*)\.[^.]*$/m.exec(
-        this.id as string
-      );
-      lib = lib.replace(/\./g, "/");
+      let parsed = /.*\.([^.]*)-(.*)\.[^.]*$/m.exec(this.id as string)!;
+
+      let lib = parsed[2].replace(/\./g, "/");
+      let name = parsed[1];
       return `http://ui5.sap.com/1.96.7/test-resources/${lib}/demokit/sample/${name}/${filename}`;
     },
   },
