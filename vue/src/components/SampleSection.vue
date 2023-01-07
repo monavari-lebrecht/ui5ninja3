@@ -41,6 +41,7 @@
 </template>
 
 <script lang="ts">
+import type Dialog from "@ui5/webcomponents/dist/Dialog";
 import "@ui5/webcomponents/dist/Label";
 import "@ui5/webcomponents/dist/TabContainer";
 import "@ui5/webcomponents/dist/Tab";
@@ -122,7 +123,10 @@ export default defineComponent({
             this.execute();
           }
         } catch (error) {
-          document.getElementById("error-sampleloading-dialog").show();
+          const dialog = document.getElementById(
+            "error-sampleloading-dialog"
+          ) as Dialog;
+          dialog.show();
         }
       },
       // fetch the data when the view is created and the data is

@@ -1,4 +1,6 @@
 import axios from "axios";
+import { sortBy } from "lodash";
+
 let libraries = [
   "sap/m",
   "sap/ui/core",
@@ -56,6 +58,7 @@ export default {
       }
     }
 
-    return controls;
+    // sort them
+    return sortBy(controls, ["title"]);
   },
 };
