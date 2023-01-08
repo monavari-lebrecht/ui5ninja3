@@ -49,9 +49,6 @@ import "@vanillawc/wc-monaco-editor";
 import download from "in-browser-download";
 import ComponentGenerator from "./../util/ComponentGenerator";
 
-import { o } from "odata";
-const odata = o("/browses/");
-
 import { defineComponent } from "vue";
 
 import type { Sample } from "../model/OData";
@@ -100,8 +97,8 @@ export default defineComponent({
         // store id from url for later usage
         this.id = params.id as string;
         // get Sample from OData
-        const data = await odata.get(`Samples('${params.id}')`).query();
-        this.sample = data;
+        // FIXME: get this.sample
+        this.sample.namespace = this.id.split("-")[0];
 
         // load manifest of sample files
         try {
