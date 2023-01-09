@@ -203,7 +203,7 @@ export default defineComponent({
 
       let lib = parsed[2].replace(/\./g, "/");
       let name = parsed[1];
-      return `http://ui5.sap.com/1.96.7/test-resources/${lib}/demokit/sample/${name}/${filename}`;
+      return `https://ui5.sap.com/1.96.7/test-resources/${lib}/demokit/sample/${name}/${filename}`;
     },
   },
 });
