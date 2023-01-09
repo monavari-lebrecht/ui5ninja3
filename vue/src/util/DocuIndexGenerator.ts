@@ -26,7 +26,7 @@ export default {
   generate: async function (version: string) {
     const controls = [] as {}[];
     for (const lib of libraries) {
-      const url = `http://ui5.sap.com/${version}/test-resources/${lib}/demokit/docuindex.json`;
+      const url = `https://ui5.sap.com/${version}/test-resources/${lib}/demokit/docuindex.json`;
       const data = await axios.get(url);
       const jsonResponse = data.data;
 
