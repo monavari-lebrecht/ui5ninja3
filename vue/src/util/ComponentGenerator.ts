@@ -10,7 +10,8 @@ const ComponentGenerator = {
     namespace: string,
     namespacePath: string
   ) {
-    const file = await axios.get("/src/assets/iframe.hbs");
+    const url = new URL("../assets/iframe.hbs", import.meta.url).href;
+    const file = await axios.get(url);
     const template = Handlebars.compile(file.data);
     const filesForTemplate = files.map((file) => {
       const content = file.content.replace(/\n/gm, "\\n").replace(/'/gm, "\\'");
