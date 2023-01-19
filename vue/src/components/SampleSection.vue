@@ -48,6 +48,7 @@ import "@ui5/webcomponents/dist/TabSeparator";
 import "@vanillawc/wc-monaco-editor";
 import download from "in-browser-download";
 import ComponentGenerator from "./../util/ComponentGenerator";
+import DocuIndexGenerator from "@/util/DocuIndexGenerator";
 
 import { defineComponent } from "vue";
 
@@ -98,7 +99,10 @@ export default defineComponent({
         this.id = params.id as string;
         // get Sample from OData
         // FIXME: get this.sample
-        this.sample.namespace = this.id.split("-")[0];
+        const sampleId = this.id.split("-")[0];
+        const controlId = this.id.split("-")[1];
+
+        this.sample = await DocuIndexGenerator.getSample(controlId, sampleId);
 
         // load manifest of sample files
         try {

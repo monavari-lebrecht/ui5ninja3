@@ -21,10 +21,20 @@ let libraries = [
   "sap/ui/codeeditor",
   "sap/ui/mdc",
 ];
+const controls = [] as { ID: string; samples: Sample[] }[];
 
-export default {
-  generate: async function (version: string) {
-    const controls = [] as {}[];
+const DocuIndexGenerator = {
+  getSample: async (controlId: string, sampleId: string) => {
+    const control = controls.find((control) => control.ID === controlId)!;
+    const sample = control.samples.find(
+      (sample) => sample.namespace === sampleId
+    );
+    return sample;
+  },
+  getControls: () => {
+    return controls;
+  },
+  generate: async function (version: string = "1.96.7") {
     for (const lib of libraries) {
       const url = `https://ui5.sap.com/${version}/test-resources/${lib}/demokit/docuindex.json`;
       const data = await axios.get(url);
@@ -63,3 +73,5 @@ export default {
     return sortBy(controls, ["title"]);
   },
 };
+
+export default DocuIndexGenerator;
