@@ -168,7 +168,9 @@ export default defineComponent({
     }) {
       // FIXME: dirty fix, because changeEditor is not called at the moment... check why?
       if (document.getElementById("editor")!.style.display === "block") {
-        this.currentFile.content = document.getElementById("editor")!.value;
+        this.currentFile.content = (document.getElementById(
+          "editor"
+        ) as unknown as { value: string })!.value;
       }
       if (event.detail.tabIndex === 0) {
         this.execute();

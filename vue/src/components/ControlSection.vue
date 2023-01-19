@@ -3,12 +3,7 @@
   <ui5-page id="controlsPage" background-design="List">
     <ui5-bar design="Header" slot="header">
       <div class="headerContent" slot="startContent">
-        <img
-          :src="logoUrl"
-          alt="logo"
-          slot="startContent"
-          id="headerLogo"
-        />
+        <img :src="logoUrl" alt="logo" slot="startContent" id="headerLogo" />
         UI5.ninja
       </div>
       <ui5-input
@@ -61,7 +56,10 @@ const ITEMS_PER_PAGE = 15;
 export default defineComponent({
   data() {
     return {
-      logoUrl: new URL("../assets/images/logo.svg", import.meta.url).href,
+      // FIXME: change resolving of logo path
+      // logoUrl: new URL("../assets/images/logo.svg", import.meta.url).href,
+      logoUrl:
+        "https://openui5.org/654aad3012a144881ab07c0bbdd26eb8/phenix_red.svg",
       allControls: [] as Control[],
       controls: [] as Control[],
       controlsPage: 1,
