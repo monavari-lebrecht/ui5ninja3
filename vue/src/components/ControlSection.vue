@@ -4,7 +4,7 @@
     <ui5-bar design="Header" slot="header">
       <div class="headerContent" slot="startContent">
         <img
-          src="assets/images/logo.svg"
+          :src="logoUrl"
           alt="logo"
           slot="startContent"
           id="headerLogo"
@@ -61,6 +61,7 @@ const ITEMS_PER_PAGE = 15;
 export default defineComponent({
   data() {
     return {
+      logoUrl: new URL("../assets/images/logo.svg", import.meta.url).href,
       allControls: [] as Control[],
       controls: [] as Control[],
       controlsPage: 1,

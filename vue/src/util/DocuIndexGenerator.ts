@@ -2,7 +2,7 @@ import axios from "axios";
 import { sortBy } from "lodash";
 import type { Sample } from "../model/OData";
 
-let libraries = [
+const libraries = [
   "sap/m",
   "sap/ui/core",
   "sap/ui/comp",
@@ -24,11 +24,11 @@ let libraries = [
 const controls = [] as { ID: string; samples: Sample[] }[];
 
 const DocuIndexGenerator = {
-  getSample: async (controlId: string, sampleId: string) => {
+  getSample: async (controlId: string, sampleId: string): Promise<Sample> => {
     const control = controls.find((control) => control.ID === controlId)!;
     const sample = control.samples.find(
       (sample) => sample.namespace === sampleId
-    );
+    )!;
     return sample;
   },
   getControls: () => {
