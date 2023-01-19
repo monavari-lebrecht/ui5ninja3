@@ -166,6 +166,10 @@ export default defineComponent({
     selectFile: function (event: {
       detail: { tab: { text: string }; tabIndex: number };
     }) {
+      // FIXME: dirty fix, because changeEditor is not called at the moment... check why?
+      if (document.getElementById("editor")!.style.display === "block") {
+        this.currentFile.content = document.getElementById("editor")!.value;
+      }
       if (event.detail.tabIndex === 0) {
         this.execute();
       } else {
